@@ -32,7 +32,7 @@ O puede seguir [estas](https://eduard-martinez.github.io/blog/github/clonar_gith
 
 ## 2. Leer las instrucciones iniciales
 
-Después de descargar o clonar el repositorio de la clase, usted debe abrir el archivo **Intro-clase-11.html** que se encuentra dentro de la carpeta del repositorio. Siga atentamente las instrucciones.
+Después de descargar o clonar el repositorio de la clase, usted debe abrir el archivo **Intro-clase-12.html** que se encuentra dentro de la carpeta del repositorio. Siga atentamente las instrucciones.
 
 
 

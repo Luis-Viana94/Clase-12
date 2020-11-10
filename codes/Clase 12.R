@@ -65,8 +65,8 @@ crs(deforestacion)
 st_crs(deforestacion)
 
 #### 3.3.4. Valores de los pixeles (ver diccionario)
-minValue(deforestacion$deforestacion)  
-maxValue(deforestacion$deforestacion)  
+minValue(deforestacion$cobertura_vegetal)  
+maxValue(deforestacion$cobertura_vegetal)  
 values(deforestacion)
 
 ### 3.3. Trabajar con los values de los pixeles
@@ -82,7 +82,7 @@ writeRaster(x = deforestacion,filename = "data/procesada/magdalena_deforestacion
 
 ### 3.5. Puedo reproyectar un raster?
 proj4string(deforestacion)
-deforestacion_pr <- raster::projectRaster(deforestacion,crs = '+proj=utm +zone=19 +datum=WGS84 +units=m +no_defs')
+deforestacion_pr = raster::projectRaster(deforestacion,crs = '+proj=utm +zone=19 +datum=WGS84 +units=m +no_defs')
 proj4string(deforestacion_pr)
 
 #### 3.5.1. Veamos que pasa con los valores de los pixeles
@@ -125,7 +125,7 @@ summary(data)
 ### 4.4.1. Raster a puntos
 point_1 = rasterToPoints(l_cataca)
 point_2 = rasterToPoints(l_cataca,spatial = T) %>% st_as_sf()
-ggplot() + geom_sf(data = point_2 , aes(fill=colombia_202004))
+ggplot() + geom_sf(data = point_2 , aes(color=colombia_202004),size=0.1)
 
 ### 4.4.2. Raster a polygonos
 polygon = rasterToPolygons(l_cataca) %>% st_as_sf()
@@ -199,5 +199,27 @@ point_RGB = rasterToPoints(RGB_stack,spatial = T) %>% st_as_sf()
 #-----------------#
 #  6. Aplicacion  #
 #-----------------#
+rm(list = ls())
+print('Vamos a calcular la correlacion entre luminosidad y deforestacion')
+
+### 6.1. Importar bases de datos
+defores = raster(x = 'data/original/SIAC/magdalena_deforestacion_1990_2000.tif')
+zona = st_read(dsn = 'data/original/mgn/MGN_Municipio.shp') %>% 
+          subset(MPIO_CCDGO %in% c('980')) %>% st_transform(crs = st_crs(defores)) %>% .[,'MPIO_CNMBR']
+vias = st_read(dsn = 'data/original/mgn/VIAS.shp') %>% 
+       st_transform(crs = st_crs(defores)) %>% st_intersection(zona)
+c_poblado = readRDS(file = 'data/original/mgn/centros poblados.rds') %>% st_as_sf() %>%
+            subset(codmpio %in% c('47980')) %>% st_transform(crs = st_crs(defores)) 
+defo_zona = crop(defores,st_buffer(c_poblado,dist = 0.1)) %>% mask(st_buffer(c_poblado,dist = 0.1)) %>% rasterToPoints(spatial = T) %>% st_as_sf()
+
+### 6.2. Funcion que calcula distancias
+
+
+
+
+
+
+
+
 
 
